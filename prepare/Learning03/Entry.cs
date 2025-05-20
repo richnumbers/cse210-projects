@@ -7,7 +7,8 @@ public class Entry
     public string _question;
     public string _response;
     Random random = new Random();
-
+    
+  
     public string Questions()
     {
 

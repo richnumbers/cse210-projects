@@ -5,16 +5,23 @@ using System.Text.Json;
 public class Journal
 {
     Entry entry = new Entry();
-    string _question;
-    string _response;
-    int _title;
+    List<Entry> entries = new List<Entry>();
+    string Question;
+    string Response;
+    int Title;
     Dictionary<int, List<string>> journal = new();
+    
 
 
     public void Menu()
     {
+        if (File.Exists("journal.json"))
+{
+        string json = File.ReadAllText("journal.json");
+        entries = JsonSerializer.Deserialize<List<Entry>>(json);
+}
         string choice = "";
-        while (choice != "6")
+        while (choice != "5")
         {
             Console.WriteLine("Welcome to the Journal App!");
             Console.WriteLine("Please select an option:");
@@ -28,17 +35,19 @@ public class Journal
             switch (choice)
             {
                 case "1":
-                    Console.WriteLine("Please enter a title for your entry:");
-                    _title = int.Parse(Console.ReadLine());
-                    _question = entry.Questions();
-                    _response = AddEntry(_question);
-                    
+                    Console.WriteLine("Please enter the Data: mmddyyyy for your entry:");
+                    Title = int.Parse(Console.ReadLine());
+                    Question = entry.Questions();
+                    Response = AddEntry(Question);
+                    entries.Add(new Entry { _title = Title, _question = Question, _response = Response });
+
+
                     break;
                 case "2":
                     ShowEntries();
                     break;
                 case "3":
-                    SaveJournal(_response, _question, _title);
+                    SaveJournal();
                     break;
                 case "4":
                     entry.AddQuestion();
@@ -52,7 +61,7 @@ public class Journal
                     break;
             }
         }
-        
+
     }
 
     public string AddEntry(string _question)
@@ -66,45 +75,26 @@ public class Journal
 
     }
 
-    public void SaveJournal(string _response, string _question, int _title)
+   public void SaveJournal()
+{
+    string json = JsonSerializer.Serialize(entries, new JsonSerializerOptions { WriteIndented = true });
+    File.WriteAllText("journal.json", json);
+    Console.WriteLine("All entries saved.");
+}   public void ShowEntries()
+{
+    if (entries.Count == 0)
     {
-        Dictionary<int, List<string>> journal = new();
-
-        if (File.Exists("journal.json"))
-        {
-            string json = File.ReadAllText("journal.json");
-            journal = JsonSerializer.Deserialize<Dictionary<int, List<string>>>(json);
-        }
-
-        // Add the stored data
-        journal[_title] = new List<string> { _question, _response };
-
-
-        // Save it
-        string output = JsonSerializer.Serialize(journal, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText("journal.json", output);
-
-        Console.WriteLine("Entry saved.");
+        Console.WriteLine("No entries found.");
+        return;
     }
-    public void ShowEntries()
+
+    foreach (var e in entries)
     {
-        if (File.Exists("journal.json"))
-        {
-            string json = File.ReadAllText("journal.json");
-            Dictionary<int, List<string>> journal = JsonSerializer.Deserialize<Dictionary<int, List<string>>>(json);
-
-            foreach (var entry in journal)
-            {
-                Console.WriteLine($"Title: {entry.Key}");
-                Console.WriteLine($"Question: {entry.Value[0]}");
-                Console.WriteLine($"Response: {entry.Value[1]}");
-                Console.WriteLine();
-            }
-        }
-        else
-        {
-            Console.WriteLine("No entries found.");
-        }
+        Console.WriteLine($"Title: {e._title}");
+        Console.WriteLine($"Question: {e._question}");
+        Console.WriteLine($"Response: {e._response}");
+        Console.WriteLine();
     }
+}
 }
     
