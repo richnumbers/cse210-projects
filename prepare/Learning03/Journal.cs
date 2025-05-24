@@ -6,9 +6,7 @@ public class Journal
 {
     Entry entry = new Entry();
     List<Entry> entries = new List<Entry>();
-    string Question;
-    string Response;
-    int Title;
+   
     Dictionary<int, List<string>> journal = new();
     
 
@@ -36,10 +34,11 @@ public class Journal
             {
                 case "1":
                     Console.WriteLine("Please enter the Data: mmddyyyy for your entry:");
-                    Title = int.Parse(Console.ReadLine());
-                    Question = entry.Questions();
-                    Response = AddEntry(Question);
+                    int Title = int.Parse(Console.ReadLine());
+                    string Question = entry.Questions();
+                    string Response = AddEntry(Question);
                     entries.Add(new Entry { _title = Title, _question = Question, _response = Response });
+
 
 
                     break;
@@ -75,12 +74,23 @@ public class Journal
 
     }
 
-   public void SaveJournal()
+    public void SaveJournal()
 {
-    string json = JsonSerializer.Serialize(entries, new JsonSerializerOptions { WriteIndented = true });
+    Console.WriteLine($"Entries to save: {entries.Count}");
+
+    var options = new JsonSerializerOptions
+    {
+        WriteIndented = true,
+        IncludeFields = true // 👈 this is the key part
+    };
+
+    string json = JsonSerializer.Serialize(entries, options);
     File.WriteAllText("journal.json", json);
+
     Console.WriteLine("All entries saved.");
-}   public void ShowEntries()
+}
+
+public void ShowEntries()
 {
     if (entries.Count == 0)
     {

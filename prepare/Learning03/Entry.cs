@@ -1,12 +1,26 @@
 using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 public class Entry
 {
+   [JsonInclude]
     public int _title;
+
+    [JsonInclude]
     public string _question;
+
+    [JsonInclude]
     public string _response;
-    Random random = new Random();
+
+    public Entry() { }
+
+    public Entry(int title, string question, string response)
+    {
+        _title = title;
+        _question = question;
+        _response = response;
+    }    Random random = new Random();
     
   
     public string Questions()
