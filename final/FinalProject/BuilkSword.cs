@@ -15,7 +15,7 @@ public class BuilkSword : SwordQuest
         Console.WriteLine(_sword.GetName());
     }
 
-    public override void completelist(Sword sword)
+    public override void completelist(Sword sword, Player player)
     {
         if (sword.GetName() == _sword.GetName())
         {
@@ -30,5 +30,21 @@ public class BuilkSword : SwordQuest
                 Console.WriteLine($"You have turn in {_turnInAmout} of {_amout} of {_sword.GetName()}");
             }
         }
+
+
     }
+
+    public override void turnInAmout()
+    {
+
+        Console.WriteLine($"You have turn in {_turnInAmout} of {_amout} of {_sword.GetName()}");
+    }
+
+    public List<int> GetTurnedInList()
+{
+    return new List<int> { _turnInAmout }; // wrap the int in a list
+}
+
+
+
 }

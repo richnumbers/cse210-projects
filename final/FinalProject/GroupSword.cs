@@ -21,7 +21,7 @@ public class GroupSword : SwordQuest
         }
     }
 
-    public override void completelist(Sword sword)
+    public override void completelist(Sword sword, Player player)
     {
         for (int i = 0; i < _swords.Count(); i++)
         {
@@ -40,7 +40,7 @@ public class GroupSword : SwordQuest
             }
 
         }
-    
+
         for (int i = 0; i < _amouts.Count; i++)
         {
             if (_amoutTurnIn[i] < _amouts[i])
@@ -49,10 +49,26 @@ public class GroupSword : SwordQuest
             }
         }
 
-       
-            Questcomplect();
-        
+
+        Questcomplect();
     }
 
 
+
+    public override void turnInAmout()
+    {
+        for (int i = 0; i < _swords.Count(); i++)
+        {
+            Console.WriteLine($"you have turn in {_amoutTurnIn[i]} needed of {_amouts[i]}");
+        }
+    }
+
+    public List<int> GetTurnedInList()
+{
+    return _amoutTurnIn; 
 }
+
+
+}
+
+

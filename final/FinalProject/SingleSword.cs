@@ -14,14 +14,23 @@ public class SingleSword : SwordQuest
         Console.WriteLine(_sword.GetName());
     }
 
-    public override void completelist(Sword sword)
+    public override void completelist(Sword sword, Player player)
     {
         if (sword.GetName() == _sword.GetName())
         {
             Questcomplect();
-            
+            setunactive();
+            player.RemoveSword(sword);
+
+
         }
-        
+
+    }
+
+    public override void turnInAmout()
+    {
+         Console.WriteLine(_sword.GetName());
+       
     }
 
     

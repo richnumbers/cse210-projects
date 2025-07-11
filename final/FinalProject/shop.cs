@@ -1,6 +1,6 @@
 public class Shop
 {
-    List<Materials> ShopInv = new List<Materials>();
+    List<Materials> _shopInv = new List<Materials>();
     Materials materials;
 
 
@@ -13,15 +13,15 @@ public class Shop
         Materials DragonScale = new Materials("Dragon Scale", "A rare scale that provides immense strength.", 100);
         Materials DireWolfClaw = new Materials("Dire Wolf Claw", "A sharp claw from a fierce creature.", 30);
 
-        ShopInv.Add(Copper);
-        ShopInv.Add(Iron);
-        ShopInv.Add(DragonScale);
-        ShopInv.Add(DireWolfClaw);
+        _shopInv.Add(Copper);
+        _shopInv.Add(Iron);
+        _shopInv.Add(DragonScale);
+        _shopInv.Add(DireWolfClaw);
     }
 
     public int ShopInvCount()
     {
-        return ShopInv.Count();
+        return _shopInv.Count();
     }
 
     public void DisplayShop()
@@ -29,9 +29,9 @@ public class Shop
 
         Console.WriteLine("Welcome to the Shop!");
         Console.WriteLine("Available Materials:");
-        for (int i = 0; i < ShopInv.Count; i++)
+        for (int i = 0; i < _shopInv.Count; i++)
         {
-            Console.WriteLine($"-{i + 1} {ShopInv[i].GetName()} - {ShopInv[i].GetDescription()} (Cost: {ShopInv[i].GetGoldCost()} gold)");
+            Console.WriteLine($"-{i + 1} {_shopInv[i].GetName()} - {_shopInv[i].GetDescription()} (Cost: {_shopInv[i].GetGoldCost()} gold)");
         }
     }
 
@@ -39,19 +39,19 @@ public class Shop
     {
         Console.WriteLine("What are you buying? (enter the number from the shop list)");
         int choice = int.Parse(Console.ReadLine()) - 1;
-        if (choice < 0 || choice >= ShopInv.Count)
+        if (choice < 0 || choice >= _shopInv.Count)
         {
             Console.WriteLine("Invalid choice. Please try again.");
             return null;
         }
 
-        if (ShopInv[choice].GetGoldCost() > gold)
+        if (_shopInv[choice].GetGoldCost() > gold)
         {
             Console.WriteLine("You do not have enough gold to buy this material.");
             return null;
         }
-        gold -= ShopInv[choice].GetGoldCost();
-        return ShopInv[choice];
+        gold -= _shopInv[choice].GetGoldCost();
+        return _shopInv[choice];
 
     }
     

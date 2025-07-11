@@ -38,6 +38,11 @@ public abstract class SwordQuest
         _activeQuest = true;
     }
 
+    public void setunactive()
+    {
+        _activeQuest = false;
+    }
+
     public void Questcomplect()
     {
         _isCompleted = true;
@@ -48,10 +53,10 @@ public abstract class SwordQuest
         return _reward;
     }
 
- public bool isComplete()
-{
-    return _isCompleted;
-}
+    public bool isComplete()
+    {
+        return _isCompleted;
+    }
 
 
     public int Reward()
@@ -61,5 +66,7 @@ public abstract class SwordQuest
 
     public abstract void requiredSwords();
 
-    public abstract void completelist(Sword sword);
+    public abstract void completelist(Sword sword, Player player);
+
+    public abstract void turnInAmout();
 }

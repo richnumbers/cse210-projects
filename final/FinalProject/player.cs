@@ -8,23 +8,23 @@ public class Player
     private bool craf = true;
 
 
-    private int playerGold = 30;
-    List<Materials> PlayerInv = new List<Materials>();
-    List<Sword> PlayerSwords = new List<Sword>();
-    List<Materials> craftinglist = new List<Materials>();
+    private int _gold = 30;
+    List<Materials> _playerInv = new List<Materials>();
+    List<Sword> _playerSwords = new List<Sword>();
+    List<Materials> _craftingList = new List<Materials>();
 
-    CraftingRecipy crafting = new CraftingRecipy();
+    CraftingRecipy _crafting = new CraftingRecipy();
 
 
     public void BuyMaterial(Shop shop)
     {
         shop.DisplayShop();
-        Materials materials = shop.BuyMaterial(playerGold);
+        Materials materials = shop.BuyMaterial(_gold);
 
         if (materials != null)
         {
-            PlayerInv.Add(materials);
-            playerGold -= materials.GetGoldCost();
+            _playerInv.Add(materials);
+            _gold -= materials.GetGoldCost();
         }
 
     }
@@ -33,7 +33,7 @@ public class Player
 
     public void SellSword()
     {
-        if (PlayerSwords.Count == 0)
+        if (_playerSwords.Count == 0)
         {
             Console.WriteLine("You have no swords to sell");
 
@@ -41,9 +41,9 @@ public class Player
         else
         {
             Console.WriteLine("Swords that can be sold");
-            for (int i = 0; i < PlayerSwords.Count; i++)
+            for (int i = 0; i < _playerSwords.Count; i++)
             {
-                Console.WriteLine($"{i + 1} - Gold: {PlayerSwords[i].GetGold()} - Name {PlayerSwords[i].GetName()} - Description {PlayerSwords[i].GetDescription()} ");
+                Console.WriteLine($"{i + 1} - Gold: {_playerSwords[i].GetGold()} - Name {_playerSwords[i].GetName()} - Description {_playerSwords[i].GetDescription()} ");
 
             }
 
@@ -51,14 +51,14 @@ public class Player
             _input = int.Parse(Console.ReadLine()) - 1;
 
 
-            if (_input < 0 || _input > PlayerSwords.Count)
+            if (_input < 0 || _input > _playerSwords.Count)
             {
                 Console.WriteLine("Not a vailed number");
             }
             else
             {
-                playerGold += PlayerSwords[_input].GetGold();
-                PlayerSwords.Remove(PlayerSwords[_input]);
+                _gold += _playerSwords[_input].GetGold();
+                _playerSwords.Remove(_playerSwords[_input]);
             }
 
 
@@ -66,21 +66,24 @@ public class Player
         }
     }
 
-    public void StartCrafting()
+    public void StartCrafting(ref int craftcout)
     {
         craf = true;
         while (craf)
         {
-
-            for (int i = 0; i < PlayerInv.Count(); i++)
+            if (_playerInv.Count == 0)
             {
-                Console.WriteLine($"{i + 1} - {PlayerInv[i].GetName()}");
+                break;
+            }
+            for (int i = 0; i < _playerInv.Count(); i++)
+            {
+                Console.WriteLine($"{i + 1} - {_playerInv[i].GetName()}");
             }
             Console.WriteLine("What do you wish to craft with?");
             _input = int.Parse(Console.ReadLine()) - 1;
-            craftinglist.Add(PlayerInv[_input]);
-            Console.WriteLine($"{PlayerInv[_input].GetName()} has been added into the Furnace for smelting");
-            PlayerInv.Remove(PlayerInv[_input]);
+            _craftingList.Add(_playerInv[_input]);
+            Console.WriteLine($"{_playerInv[_input].GetName()} has been added into the Furnace for smelting");
+            _playerInv.Remove(_playerInv[_input]);
             Console.WriteLine("Do you want to start crafting the sword? 1 Yes\n 2 No ");
             _input = int.Parse(Console.ReadLine());
             if (_input == 1) { craf = false; }
@@ -88,12 +91,13 @@ public class Player
 
         }
 
-        Sword sword = crafting.Crafting(craftinglist);
-        craftinglist.Clear();
+        Sword sword = _crafting.Crafting(_craftingList);
+        _craftingList.Clear();
         if (sword != null)
         {
             Console.WriteLine($"You have crafted {sword.GetName()}");
-            PlayerSwords.Add(sword);
+            _playerSwords.Add(sword);
+            craftcout++;
         }
 
 
@@ -101,37 +105,68 @@ public class Player
 
     public int getgold()
     {
-        return playerGold;
+        return _gold;
+    }
+
+    public void RemoveSword(Sword sword)
+    {
+        for (int i = 0; i < _playerSwords.Count; i++)
+        {
+            if (_playerSwords[i].GetName() == sword.GetName())
+            {
+                _playerSwords.Remove(_playerSwords[i]);
+            }
+        }
     }
 
     public void getmaterials()
     {
-        if (PlayerInv.Count == 0)
+        if (_playerInv.Count == 0)
         {
             Console.WriteLine("As you look at your crafting list you noticed your shelfs are empty");
 
         }
-        else foreach (Materials inv in PlayerInv)
+        else foreach (Materials inv in _playerInv)
             {
                 Console.WriteLine(inv.GetName());
             }
     }
 
+    public int hasmateriasl()
+    {
+        return _playerInv.Count;
+    }
+
     public void GetSwords()
     {
-        if (PlayerSwords.Count == 0 )
+        if (_playerSwords.Count == 0)
         {
             Console.WriteLine("As you look at your wall and shefls you noticed you do not have any sword out to show or any in the back");
 
         }
-        else foreach (Sword sword in PlayerSwords)
-        {
+        else foreach (Sword sword in _playerSwords)
+            {
                 Console.WriteLine(sword.GetName());
-        }
-        
+            }
+
     }
 
-    
+    public void addgold(int amout)
+    {
+        _gold += amout;
     }
+
+    public Sword ChooseSword()
+    {
+        Console.WriteLine("Pick a sword to turn in.");
+        int choice = int.Parse(Console.ReadLine()) - 1;
+        return _playerSwords[choice];
+    }
+
+
+  
+
+
+}
 
 
